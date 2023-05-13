@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>影片物件偵測</title>
+</head>
+<body>
+    <h1>影片物件偵測</h1>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="video">
+        <input type="submit" value="上傳">
+    </form>
+    <div id="result"></div>
+    <div id="download"></div>
+    <script>
+        // 當表單被提交時，禁止重新載入頁面
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+            formData.append('video', document.querySelector('input[type=file]').files[0]);
+            xhr.open('POST', '/upload');
+            xhr.onload = function() {
+                // 顯示下載連結
+                document.querySelector('#download').innerHTML = xhr.responseText;
+            };
+            xhr.send(formData);
+            // 顯示物件偵測結果
+            document.querySelector('#result').innerHTML = '物件偵測中...';
+        });
+    </script>
+</body>
+</html>
